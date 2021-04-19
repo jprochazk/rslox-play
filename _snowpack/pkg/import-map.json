@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "lodash": "./lodash.js",
+    "monaco-editor/esm/vs/editor/browser/controller/coreCommands.js": "./monaco-editor/esm/vs/editor/browser/controller/coreCommands.js",
+    "monaco-editor/esm/vs/editor/browser/widget/codeEditorWidget.js": "./monaco-editor/esm/vs/editor/browser/widget/codeEditorWidget.js",
+    "monaco-editor/esm/vs/editor/contrib/bracketMatching/bracketMatching.js": "./monaco-editor/esm/vs/editor/contrib/bracketMatching/bracketMatching.js",
+    "monaco-editor/esm/vs/editor/contrib/clipboard/clipboard.js": "./monaco-editor/esm/vs/editor/contrib/clipboard/clipboard.js",
+    "monaco-editor/esm/vs/editor/contrib/comment/comment.js": "./monaco-editor/esm/vs/editor/contrib/comment/comment.js",
+    "monaco-editor/esm/vs/editor/contrib/find/findController.js": "./monaco-editor/esm/vs/editor/contrib/find/findController.js",
+    "monaco-editor/esm/vs/editor/contrib/multicursor/multicursor.js": "./monaco-editor/esm/vs/editor/contrib/multicursor/multicursor.js",
+    "monaco-editor/esm/vs/editor/editor.api.js": "./monaco-editor/esm/vs/editor/editor.api.js",
+    "svelte": "./svelte.js",
+    "svelte/internal": "./svelte/internal.js"
+  }
+}
