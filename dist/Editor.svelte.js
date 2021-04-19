@@ -25,14 +25,14 @@ function create_fragment(ctx) {
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
-			/*div_binding*/ ctx[3](div);
+			/*div_binding*/ ctx[4](div);
 		},
 		p: noop,
 		i: noop,
 		o: noop,
 		d(detaching) {
 			if (detaching) detach(div);
-			/*div_binding*/ ctx[3](null);
+			/*div_binding*/ ctx[4](null);
 		}
 	};
 }
@@ -45,6 +45,8 @@ function load() {
 	return code !== null && code !== void 0
 	? code
 	: [
+			"// Welcome to the Lox playground!",
+			"// Use the 'examples' drop-down to explore the language",
 			"class Test {",
 			"   init(value) {",
 			"       this.value = value;",
@@ -65,6 +67,7 @@ function instance($$self, $$props, $$invalidate) {
 	let container;
 	let editor;
 	const getValue = () => editor.getValue();
+	const setValue = value => editor.setValue(value);
 	const resize = () => editor.layout();
 
 	onMount(() => {
@@ -84,21 +87,25 @@ function instance($$self, $$props, $$invalidate) {
 		});
 	}
 
-	return [container, getValue, resize, div_binding];
+	return [container, getValue, setValue, resize, div_binding];
 }
 
 class Editor extends SvelteComponent {
 	constructor(options) {
 		super();
-		init(this, options, instance, create_fragment, safe_not_equal, { getValue: 1, resize: 2 });
+		init(this, options, instance, create_fragment, safe_not_equal, { getValue: 1, setValue: 2, resize: 3 });
 	}
 
 	get getValue() {
 		return this.$$.ctx[1];
 	}
 
-	get resize() {
+	get setValue() {
 		return this.$$.ctx[2];
+	}
+
+	get resize() {
+		return this.$$.ctx[3];
 	}
 }
 

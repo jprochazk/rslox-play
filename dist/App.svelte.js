@@ -8,6 +8,7 @@ import {
 	check_outros,
 	create_component,
 	destroy_component,
+	destroy_each,
 	detach,
 	element,
 	empty,
@@ -32,7 +33,15 @@ import Loader from "./Loader.svelte.js";
 import * as lox from "./lox.js";
 import { debounce } from "../_snowpack/pkg/lodash.js";
 import { onMount } from "../_snowpack/pkg/svelte.js";
+import { sources } from "./examples.js";
 
+function get_each_context(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[16] = list[i];
+	return child_ctx;
+}
+
+// (75:0) {:else}
 function create_else_block(ctx) {
 	let div;
 	let loader;
@@ -43,7 +52,7 @@ function create_else_block(ctx) {
 		c() {
 			div = element("div");
 			create_component(loader.$$.fragment);
-			attr(div, "class", "window-center svelte-1omcwly");
+			attr(div, "class", "window-center svelte-1liaun7");
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -67,7 +76,7 @@ function create_else_block(ctx) {
 	};
 }
 
-// (41:0) {#if ready}
+// (47:0) {#if ready}
 function create_if_block(ctx) {
 	let div0;
 	let button0;
@@ -79,20 +88,31 @@ function create_if_block(ctx) {
 	let t4;
 	let button2_hidden_value;
 	let t5;
+	let label;
+	let t7;
+	let select_1;
+	let t8;
 	let div2;
 	let div1;
 	let editor_1;
-	let t6;
+	let t9;
 	let textarea0;
 	let textarea0_hidden_value;
-	let t7;
+	let t10;
 	let textarea1;
 	let current;
 	let mounted;
 	let dispose;
+	let each_value = Object.keys(sources);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	}
+
 	let editor_1_props = {};
 	editor_1 = new Editor({ props: editor_1_props });
-	/*editor_1_binding*/ ctx[8](editor_1);
+	/*editor_1_binding*/ ctx[11](editor_1);
 
 	return {
 		c() {
@@ -106,23 +126,35 @@ function create_if_block(ctx) {
 			button2 = element("button");
 			t4 = text("Hide Disassembly");
 			t5 = space();
+			label = element("label");
+			label.textContent = "Examples:";
+			t7 = space();
+			select_1 = element("select");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			t8 = space();
 			div2 = element("div");
 			div1 = element("div");
 			create_component(editor_1.$$.fragment);
-			t6 = space();
+			t9 = space();
 			textarea0 = element("textarea");
-			t7 = space();
+			t10 = space();
 			textarea1 = element("textarea");
 			button1.hidden = /*disassemblyShown*/ ctx[3];
 			button2.hidden = button2_hidden_value = !/*disassemblyShown*/ ctx[3];
+			attr(label, "for", "Examples");
+			attr(select_1, "name", "Examples");
 			attr(div0, "class", "toolbar");
-			attr(div1, "class", "code svelte-1omcwly");
+			attr(div1, "class", "code svelte-1liaun7");
 			toggle_class(div1, "full", !/*disassemblyShown*/ ctx[3]);
-			attr(textarea0, "class", "disassembly svelte-1omcwly");
+			attr(textarea0, "class", "disassembly svelte-1liaun7");
 			textarea0.hidden = textarea0_hidden_value = !/*disassemblyShown*/ ctx[3];
 			textarea0.disabled = true;
-			attr(div2, "class", "code-container svelte-1omcwly");
-			attr(textarea1, "class", "console svelte-1omcwly");
+			attr(div2, "class", "code-container svelte-1liaun7");
+			attr(textarea1, "class", "console svelte-1liaun7");
 			textarea1.disabled = true;
 		},
 		m(target, anchor) {
@@ -134,25 +166,36 @@ function create_if_block(ctx) {
 			append(div0, t3);
 			append(div0, button2);
 			append(button2, t4);
-			insert(target, t5, anchor);
+			append(div0, t5);
+			append(div0, label);
+			append(div0, t7);
+			append(div0, select_1);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select_1, null);
+			}
+
+			/*select_1_binding*/ ctx[10](select_1);
+			insert(target, t8, anchor);
 			insert(target, div2, anchor);
 			append(div2, div1);
 			mount_component(editor_1, div1, null);
-			append(div2, t6);
+			append(div2, t9);
 			append(div2, textarea0);
 			set_input_value(textarea0, /*disassembly*/ ctx[2]);
-			insert(target, t7, anchor);
+			insert(target, t10, anchor);
 			insert(target, textarea1, anchor);
 			set_input_value(textarea1, /*output*/ ctx[4]);
 			current = true;
 
 			if (!mounted) {
 				dispose = [
-					listen(button0, "click", /*run*/ ctx[5]),
-					listen(button1, "click", /*showDisassembly*/ ctx[6]),
-					listen(button2, "click", /*hideDisassembly*/ ctx[7]),
-					listen(textarea0, "input", /*textarea0_input_handler*/ ctx[9]),
-					listen(textarea1, "input", /*textarea1_input_handler*/ ctx[10])
+					listen(button0, "click", /*run*/ ctx[6]),
+					listen(button1, "click", /*showDisassembly*/ ctx[7]),
+					listen(button2, "click", /*hideDisassembly*/ ctx[8]),
+					listen(select_1, "input", /*selection*/ ctx[9]),
+					listen(textarea0, "input", /*textarea0_input_handler*/ ctx[12]),
+					listen(textarea1, "input", /*textarea1_input_handler*/ ctx[13])
 				];
 
 				mounted = true;
@@ -165,6 +208,29 @@ function create_if_block(ctx) {
 
 			if (!current || dirty & /*disassemblyShown*/ 8 && button2_hidden_value !== (button2_hidden_value = !/*disassemblyShown*/ ctx[3])) {
 				button2.hidden = button2_hidden_value;
+			}
+
+			if (dirty & /*Object, sources*/ 0) {
+				each_value = Object.keys(sources);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(select_1, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
 			}
 
 			const editor_1_changes = {};
@@ -197,14 +263,41 @@ function create_if_block(ctx) {
 		},
 		d(detaching) {
 			if (detaching) detach(div0);
-			if (detaching) detach(t5);
+			destroy_each(each_blocks, detaching);
+			/*select_1_binding*/ ctx[10](null);
+			if (detaching) detach(t8);
 			if (detaching) detach(div2);
-			/*editor_1_binding*/ ctx[8](null);
+			/*editor_1_binding*/ ctx[11](null);
 			destroy_component(editor_1);
-			if (detaching) detach(t7);
+			if (detaching) detach(t10);
 			if (detaching) detach(textarea1);
 			mounted = false;
 			run_all(dispose);
+		}
+	};
+}
+
+// (58:12) {#each Object.keys(sources) as name}
+function create_each_block(ctx) {
+	let option;
+	let t_value = /*name*/ ctx[16] + "";
+	let t;
+	let option_value_value;
+
+	return {
+		c() {
+			option = element("option");
+			t = text(t_value);
+			option.__value = option_value_value = /*name*/ ctx[16];
+			option.value = option.__value;
+		},
+		m(target, anchor) {
+			insert(target, option, anchor);
+			append(option, t);
+		},
+		p: noop,
+		d(detaching) {
+			if (detaching) detach(option);
 		}
 	};
 }
@@ -318,6 +411,20 @@ function instance($$self, $$props, $$invalidate) {
 		setTimeout(editorResize, 0);
 	}
 
+	let select;
+
+	function selection() {
+		const which = select.value;
+		editor.setValue(sources[which]);
+	}
+
+	function select_1_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			select = $$value;
+			$$invalidate(5, select);
+		});
+	}
+
 	function editor_1_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			editor = $$value;
@@ -341,9 +448,12 @@ function instance($$self, $$props, $$invalidate) {
 		disassembly,
 		disassemblyShown,
 		output,
+		select,
 		run,
 		showDisassembly,
 		hideDisassembly,
+		selection,
+		select_1_binding,
 		editor_1_binding,
 		textarea0_input_handler,
 		textarea1_input_handler
