@@ -3,6 +3,7 @@ module.exports = {
   mount: {
     public: {url: '/', static: true},
     src: {url: '/dist'},
+    "lib/pkg": {url:"/lib/pkg"}
   },
   plugins: [
     '@snowpack/plugin-svelte',
@@ -32,4 +33,5 @@ module.exports = {
   buildOptions: {
     /* ... */
   },
+  alias: {}
 };

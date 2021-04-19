@@ -1,70 +1,110 @@
-<script lang='typescript'>
-	import {onMount} from 'svelte';
-	let count: number = 0;
-	onMount(() => {
-	  const interval = setInterval(() => count++, 1000);
-	  return () => {
-		clearInterval(interval);
-	  };
-	});
-  </script>
-  
-  <style>
-	:global(body) {
-	  margin: 0;
-	  font-family: Arial, Helvetica, sans-serif;
-	}
-	.App {
-	  text-align: center;
-	}
-	.App code {
-	  background: #0002;
-	  padding: 4px 8px;
-	  border-radius: 4px;
-	}
-	.App p {
-	  margin: 0.4rem;
-	}
-  
-	.App-header {
-	  background-color: #f9f6f6;
-	  color: #333;
-	  min-height: 100vh;
-	  display: flex;
-	  flex-direction: column;
-	  align-items: center;
-	  justify-content: center;
-	  font-size: calc(10px + 2vmin);
-	}
-	.App-link {
-	  color: #ff3e00;
-	}
-	.App-logo {
-	  height: 36vmin;
-	  pointer-events: none;
-	  margin-bottom: 3rem;
-	  animation: App-logo-spin infinite 1.6s ease-in-out alternate;
-	}
-	@keyframes App-logo-spin {
-	  from {
-		transform: scale(1);
-	  }
-	  to {
-		transform: scale(1.06);
-	  }
-	}
-  </style>
-  
-  <div class="App">
-	<header class="App-header">
-	  <img src="/logo.svg" class="App-logo" alt="logo" />
-	  <p>Edit <code>src/App.svelte</code> and save to reload.</p>
-	  <p>Page has been open for <code>{count}</code> seconds.</p>
-	  <p>
-		<a class="App-link" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
-		  Learn Svelte
-		</a>
-	  </p>
-	</header>
-  </div>
-  
+<script lang="ts">
+    import Editor from "./Editor.svelte";
+    import Loader from "./Loader.svelte";
+    import * as lox from "./lox";
+    import { debounce } from "lodash";
+    import { onMount } from "svelte";
+
+    let editor: Editor;
+    let editorResize = debounce(() => editor.resize(), 150);
+    let ready = false;
+    let disassembly: string = "";
+    let disassemblyShown = false;
+    let output = "";
+    onMount(() => {
+        lox.init().then(() => (ready = true));
+        let interval: number = setInterval(updateDisassembly, 250);
+        window.addEventListener("resize", editorResize);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("resize", editorResize);
+        };
+    });
+
+    function run() {
+        if (!ready) return;
+        output = lox.interpret(editor.getValue());
+    }
+    function updateDisassembly() {
+        if (ready && disassemblyShown) {
+            disassembly = lox.disassemble(editor.getValue());
+        }
+    }
+    function showDisassembly() {
+        disassemblyShown = true;
+        setTimeout(editorResize, 0);
+    }
+    function hideDisassembly() {
+        disassemblyShown = false;
+        setTimeout(editorResize, 0);
+    }
+</script>
+
+{#if ready}
+    <div class="toolbar">
+        <button on:click={run}>Run</button>
+        <button hidden={disassemblyShown} on:click={showDisassembly}
+            >Show Disassembly</button
+        >
+        <button hidden={!disassemblyShown} on:click={hideDisassembly}
+            >Hide Disassembly</button
+        >
+    </div>
+    <div class="code-container">
+        <div class="code" class:full={!disassemblyShown}>
+            <Editor bind:this={editor} />
+        </div>
+        <textarea
+            class="disassembly"
+            hidden={!disassemblyShown}
+            bind:value={disassembly}
+            disabled
+        />
+    </div>
+    <textarea class="console" bind:value={output} disabled />
+{:else}
+    <div class="window-center">
+        <Loader />
+    </div>
+{/if}
+
+<style>
+    :global(body) {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .window-center {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .code-container {
+        height: 50%;
+        width: 100%;
+        display: flex;
+    }
+    .code {
+        height: 100%;
+        width: 50%;
+    }
+    .code.full {
+        width: 100%;
+    }
+    .disassembly {
+        height: 100%;
+        width: 50%;
+        resize: none;
+    }
+
+    .console {
+        height: 20%;
+        width: 100%;
+        resize: none;
+    }
+</style>
