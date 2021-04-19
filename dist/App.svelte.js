@@ -41,7 +41,7 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (75:0) {:else}
+// (76:0) {:else}
 function create_else_block(ctx) {
 	let div;
 	let loader;
@@ -92,13 +92,15 @@ function create_if_block(ctx) {
 	let t7;
 	let select_1;
 	let t8;
+	let a;
+	let t10;
 	let div2;
 	let div1;
 	let editor_1;
-	let t9;
+	let t11;
 	let textarea0;
 	let textarea0_hidden_value;
-	let t10;
+	let t12;
 	let textarea1;
 	let current;
 	let mounted;
@@ -136,17 +138,21 @@ function create_if_block(ctx) {
 			}
 
 			t8 = space();
+			a = element("a");
+			a.textContent = "Source (GitHub)";
+			t10 = space();
 			div2 = element("div");
 			div1 = element("div");
 			create_component(editor_1.$$.fragment);
-			t9 = space();
+			t11 = space();
 			textarea0 = element("textarea");
-			t10 = space();
+			t12 = space();
 			textarea1 = element("textarea");
 			button1.hidden = /*disassemblyShown*/ ctx[3];
 			button2.hidden = button2_hidden_value = !/*disassemblyShown*/ ctx[3];
 			attr(label, "for", "Examples");
 			attr(select_1, "name", "Examples");
+			attr(a, "href", "https://github.com/jprochazk/rslox");
 			attr(div0, "class", "toolbar");
 			attr(div1, "class", "code svelte-1liaun7");
 			toggle_class(div1, "full", !/*disassemblyShown*/ ctx[3]);
@@ -176,14 +182,16 @@ function create_if_block(ctx) {
 			}
 
 			/*select_1_binding*/ ctx[10](select_1);
-			insert(target, t8, anchor);
+			append(div0, t8);
+			append(div0, a);
+			insert(target, t10, anchor);
 			insert(target, div2, anchor);
 			append(div2, div1);
 			mount_component(editor_1, div1, null);
-			append(div2, t9);
+			append(div2, t11);
 			append(div2, textarea0);
 			set_input_value(textarea0, /*disassembly*/ ctx[2]);
-			insert(target, t10, anchor);
+			insert(target, t12, anchor);
 			insert(target, textarea1, anchor);
 			set_input_value(textarea1, /*output*/ ctx[4]);
 			current = true;
@@ -265,11 +273,11 @@ function create_if_block(ctx) {
 			if (detaching) detach(div0);
 			destroy_each(each_blocks, detaching);
 			/*select_1_binding*/ ctx[10](null);
-			if (detaching) detach(t8);
+			if (detaching) detach(t10);
 			if (detaching) detach(div2);
 			/*editor_1_binding*/ ctx[11](null);
 			destroy_component(editor_1);
-			if (detaching) detach(t10);
+			if (detaching) detach(t12);
 			if (detaching) detach(textarea1);
 			mounted = false;
 			run_all(dispose);
