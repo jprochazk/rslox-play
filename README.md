@@ -1,5 +1,7 @@
 # rslox-play
 
+Playground for [rslox](https://github.com/jprochazk/rslox).
+
 ### Usage
 
 Running locally requires `rust` (with `cargo`) and `npm` (version 7.0+ or with `yarn`).

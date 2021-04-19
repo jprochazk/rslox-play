@@ -63,6 +63,7 @@
                 <option value={name}>{name}</option>
             {/each}
         </select>
+        <a href="https://github.com/jprochazk/rslox">Source (GitHub)</a>
     </div>
     <div class="code-container">
         <div class="code" class:full={!disassemblyShown}>
