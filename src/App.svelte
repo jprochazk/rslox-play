@@ -4,6 +4,7 @@
     import * as lox from "./lox";
     import { debounce } from "lodash";
     import { onMount } from "svelte";
+    import { sources } from "./examples";
 
     let editor: Editor;
     let editorResize = debounce(() => editor.resize(), 150);
@@ -39,17 +40,29 @@
         disassemblyShown = false;
         setTimeout(editorResize, 0);
     }
+
+    let select: HTMLSelectElement;
+    function selection() {
+        const which = select.value;
+        editor.setValue(sources[which]);
+    }
 </script>
 
 {#if ready}
     <div class="toolbar">
         <button on:click={run}>Run</button>
-        <button hidden={disassemblyShown} on:click={showDisassembly}
-            >Show Disassembly</button
-        >
-        <button hidden={!disassemblyShown} on:click={hideDisassembly}
-            >Hide Disassembly</button
-        >
+        <button hidden={disassemblyShown} on:click={showDisassembly}>
+            Show Disassembly
+        </button>
+        <button hidden={!disassemblyShown} on:click={hideDisassembly}>
+            Hide Disassembly
+        </button>
+        <label for="Examples">Examples:</label>
+        <select bind:this={select} on:input={selection} name="Examples">
+            {#each Object.keys(sources) as name}
+                <option value={name}>{name}</option>
+            {/each}
+        </select>
     </div>
     <div class="code-container">
         <div class="code" class:full={!disassemblyShown}>
@@ -99,6 +112,10 @@
     .disassembly {
         height: 100%;
         width: 50%;
+        padding: 0;
+        padding-left: 5px;
+        margin: 0;
+        border: none;
         resize: none;
     }
 

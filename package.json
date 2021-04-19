@@ -1,8 +1,9 @@
 {
     "scripts": {
         "dev": "snowpack dev",
-        "build": "snowpack build",
-        "build:lib": "(cd lib && wasm-pack build --release --out-name index --target web)"
+        "build": "(snowpack build && node postbuild.js)",
+        "build:lib": "(cd lib && wasm-pack build --release --out-name index --target web)",
+        "build:lib:dev": "(cd lib && wasm-pack build --dev --out-name index --target web)"
     },
     "dependencies": {
         "lodash": "^4.17.21",
