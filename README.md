@@ -1,12 +1,15 @@
 # rslox-play
 
-Running locally requires `rust` (with `cargo`) and `npm` (+ `yarn`).
+### Usage
 
-To build the WASM bindings, the following cargo binaries need to be installed:
-* cargo-generate
-* wasm-pack
+Running locally requires `rust` (with `cargo`) and `npm` (version 7.0+ or with `yarn`).
 
-First, build the rslox WASM bindings:
+To build the WASM bindings, you will need `wasm-pack` installed:
+```
+$ cargo install wasm-pack
+```
+
+Build the rslox WASM bindings:
 ```
 $ yarn build:lib
 ```

@@ -32,7 +32,7 @@ module.exports = {
     /* ... */
   },
   buildOptions: {
-    baseUrl: "rslox-play"
+    /* baseUrl: "rslox-play" */
   },
   alias: {}
 };
